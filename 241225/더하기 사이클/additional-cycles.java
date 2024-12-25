@@ -9,27 +9,30 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         String s = br.readLine();
         N = Integer.parseInt(s);
+        String [] arr=s.split("");
         int n = N % 10;
-        int cnt=1;
-        int sum = 0;
-        int b=0;
-        int temp=0;
+        int cnt=0;
+
+        int sum =0;
+        for(int i = 0;i<arr.length;i++){
+            sum +=  Integer.parseInt(arr[i]);
+        }
+        int b= sum%10;
+        int next = n * 10 + b;
+        n= next%10;
+        cnt++;
         while(true){
-            cnt++;
-            sum =0;
-            b=0;
-            arr = String.valueOf(temp).split("");
-            for(int i =0;i<arr.length;i++){
-                sum += Integer.parseInt(arr[i]);
+            sum=0;
+            arr=String.valueOf(next).split("");
+            for(int i = 0;i<arr.length;i++){
+                sum +=  Integer.parseInt(arr[i]);
             }
-            // System.out.println(sum);
 
             b = sum % 10;
-            // System.out.println(n);
-            // System.out.println(b);
-            temp = n * 10 + b;
-            // System.out.println(temp);
-            if(N == temp){
+            next = n * 10 + b;
+            n = next%10;
+            cnt++;
+            if(N == next){
                 break;
             }
         }
