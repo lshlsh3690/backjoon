@@ -13,6 +13,10 @@ public class Main {
         int n = N % 10;
         int cnt=0;
 
+        if(N == 0){
+            System.out.println(1);
+            return;
+        }
         int sum =0;
         for(int i = 0;i<arr.length;i++){
             sum +=  Integer.parseInt(arr[i]);
