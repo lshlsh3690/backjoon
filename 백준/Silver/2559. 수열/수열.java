@@ -1,40 +1,40 @@
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.StringTokenizer;
+import java.util.*;
+import java.lang.*;
 
 public class Main {
-    static int n, k;
+    private static int N, K, result=Integer.MIN_VALUE;
+    private static int[] arr,sum;
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
-    static int[] arr, sum;
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader((System.in)));
-        StringTokenizer st = new StringTokenizer(br.readLine(), " ");
-        n = Integer.parseInt(st.nextToken());
-        k = Integer.parseInt(st.nextToken());
+        N = Integer.parseInt(st.nextToken());
+        K = Integer.parseInt(st.nextToken());
 
-        arr = new int[n+1];
-        sum = new int[n + 1];
+        arr = new int[N];
+        sum = new int[N];
 
-        st = new StringTokenizer(br.readLine(), " ");
-        for (int i = 1; i <= n; i++) {
-            int temp = Integer.parseInt(st.nextToken());
-            arr[i] = temp;
-            if (i == 1){
-                sum[1] = arr[1];
-                continue;
-            }
-            sum[i] = sum[i - 1] + temp;
+        st = new StringTokenizer(br.readLine());
+        for (int i = 0; i < N; i++) {
+            arr[i] = Integer.parseInt(st.nextToken());
         }
 
-        long result = Long.MIN_VALUE;
 
-        for (int i = k; i <= n; i++) {
-            int value = sum[i] - sum[i - k];
-            result = Math.max(result, value);
+
+        int tmp = 0;
+        for (int i = 0; i < K; i++) {
+            tmp += arr[i];
+        }
+        sum[K-1] = tmp;
+
+        result = Math.max(result, tmp);
+        for (int i = K; i < N; i++) {
+            sum[i] =sum[i - 1] - arr[i - K] + arr[i];
+            result = Math.max(result, sum[i]);
         }
 
         System.out.println(result);
-
     }
 }
