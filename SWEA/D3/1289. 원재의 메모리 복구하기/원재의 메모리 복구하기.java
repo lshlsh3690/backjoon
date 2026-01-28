@@ -1,11 +1,11 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-
+ 
 public class Solution {
     public static void main(String[] args) throws Exception{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int T = Integer.parseInt(br.readLine());
-
+ 
         for (int t = 1; t <= T; t++) {
             StringBuilder sb = new StringBuilder(br.readLine());
             int cnt = 0;
@@ -15,7 +15,7 @@ public class Solution {
                     while (i + len < sb.length() && sb.charAt(i + len) == '1') {
                         len++;
                     }
-
+ 
                     for (int j = i;j <sb.length() ; j++) {
                         if (sb.charAt(j) == '1') {
                             sb.setCharAt(j, '0');
@@ -27,12 +27,12 @@ public class Solution {
                     i += len-1;
                 }
             }
-
+ 
             System.out.println("#"+ t+" " +cnt);
         }
     }
 }
-
+ 
 /*
 1010011
 0101100
