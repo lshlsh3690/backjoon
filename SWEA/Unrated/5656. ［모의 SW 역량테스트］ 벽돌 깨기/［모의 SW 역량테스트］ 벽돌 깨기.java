@@ -8,7 +8,6 @@ public class Solution {
 	static int[][] arr;
 	static int[][] bombedArr;
 	static int[][] gravityArr;
-	static boolean[][] visited; 
 	
 	static ArrayDeque<int[]> que = new ArrayDeque<>();
 	static int[] selected;
@@ -28,7 +27,6 @@ public class Solution {
 			 arr = new int[H][W];
 			 bombedArr = new int[H][W];
 			 gravityArr = new int[H][W];
-			 visited = new boolean[H][W];
 			 selected = new int[N];
 			 que.clear();
 			 
@@ -41,25 +39,6 @@ public class Solution {
 
 			 selectBombColOrder(0); // 폭탄을 떨어트릴 열의 순서를 중복 순열로 구한다 O(W^N)
 			 
-//			 initBombedArr();
-//			 
-//			 bomb(2);
-//			 initGravityArr();
-//			 gravity();
-//			 
-//			 bomb(2);
-//			 initGravityArr();
-//			 gravity();
-//			 
-//			 bomb(6);
-//			 initGravityArr();
-//			 gravity();
-//			 
-//			 System.out.println("============================");
-//			 for (int[] a : bombedArr) {
-//				 System.out.println(Arrays.toString(a));
-//			 }
-
 			 System.out.println("#" + tc + " " + ans);
 		 }
 	}
@@ -68,11 +47,8 @@ public class Solution {
 		 if(idx == N) {
 			 // 폭탄 터트릴 arr 배열 복사, visited 배열 초기화 
 			 initBombedArr();
-			 initVisited();
-			 
 			 for(int col : selected) {
 				 bomb(col);
-				 initGravityArr();
 				 gravity();
 			 }
 			 
@@ -108,7 +84,7 @@ public class Solution {
 			 
 			 
 			 for (int i = 0 ; i < 4 ; i ++) {
-				 for (int d = 0 ; d < dist ; d ++) {
+				 for (int d = 1 ; d < dist ; d ++) {
 					 int nx = x + dx[i] * d;
 					 int ny = y + dy[i] * d;
 					 
@@ -125,17 +101,14 @@ public class Solution {
 	 
 	 static void gravity() {
 		 for (int j = 0 ; j < W ; j ++) {
-			 int col = H - 1;
+			 int col = -1;
 			 for (int i = H - 1 ; i >= 0 ; i --) {
-				 if(bombedArr[i][j] != 0) {
-					 gravityArr[col --][j] = bombedArr[i][j];
+				 if(bombedArr[i][j] == 0 && col == -1) {
+					 col = i;
+				 }else if (bombedArr[i][j] != 0 && col >= 0) {
+					 bombedArr[col--][j] = bombedArr[i][j];
+					 bombedArr[i][j] = 0 ;
 				 }
-			 }
-		 }
-		 
-		 for (int i = 0 ; i < H ; i ++) {
-			 for (int j = 0 ; j < W ; j ++) {
-				 bombedArr[i][j] = gravityArr[i][j];
 			 }
 		 }
 	 }
@@ -156,24 +129,6 @@ public class Solution {
 		 for (int i = 0 ; i < H ; i ++) {
 			 for (int j = 0 ; j < W ; j ++) {
 				 bombedArr[i][j] = arr[i][j];
-			 }
-		 }
-	 }
-	 
-	 
-	 static void initGravityArr() {
-		 for (int i = 0 ; i < H ; i ++) {
-			 for (int j = 0 ; j < W ; j ++) {
-				 gravityArr[i][j] = 0 ;
-			 }
-		 }
-	 }
-
-	 
-	 static void initVisited() {
-		 for (int i = 0 ; i < H ; i ++) {
-			 for (int j = 0 ; j < W ; j ++) {
-				 visited[i][j] = false;
 			 }
 		 }
 	 }
