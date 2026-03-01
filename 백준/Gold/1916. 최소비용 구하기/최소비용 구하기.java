@@ -3,73 +3,63 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.PriorityQueue;
-import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class Main {
-	static int INF = 1000000000;
-	static int N,M, startNum, destNum;
-	static List<int[]>[]arr;
-	static int[]distance;
-	static boolean[]visited;
-	public static void main(String[] args) throws Exception{
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringTokenizer st;
-		N = Integer.parseInt(br.readLine());
-		M = Integer.parseInt(br.readLine());
-		
-		arr = new ArrayList[N+1];
-		distance = new int[N+1];
-		visited = new boolean[N+1];
-		
-		for(int i = 1;i<N+1;i++) {
-			arr[i]= new ArrayList<>();
-			distance[i]=INF;
-		}
-		
-		for(int i = 0;i<M;i++) {
-			st = new StringTokenizer(br.readLine(), " ");
-			int start = Integer.parseInt(st.nextToken());
-			int end = Integer.parseInt(st.nextToken());
-			int w = Integer.parseInt(st.nextToken());
-			arr[start].add(new int[] {end, w});
-		}
-		
-		st = new StringTokenizer(br.readLine(), " ");
-		startNum = Integer.parseInt(st.nextToken());
-		destNum = Integer.parseInt(st.nextToken());
-		
-		distance[startNum] = 0;
-		PriorityQueue<int[]>pq = new PriorityQueue<>((o1,o2) -> o1[1] - o2[1]);
-		pq.add(new int[] {startNum,0});
-		
-		while(!pq.isEmpty()) {
-			int[] poll = pq.poll();
-			int idx = poll[0];
-			int cost = poll[1];
-			
-			if (visited[idx]) {
-				continue;
-			}
-			
-			visited[idx]= true;
-			
-			for(int[] edge : arr[idx]) {
-				int nextIdx = edge[0];
-				int nextCost = edge[1];
-				
-				if (visited[nextIdx]) {
-					continue;
-				}
-				
-				if (distance[nextIdx] > cost + nextCost) {
-					distance[nextIdx] = cost + nextCost;
-					pq.add(new int[] {nextIdx, distance[nextIdx]});
-				}
-			}
-		}
-		
-		
-		System.out.println(distance[destNum]);
-	}
+    static int V,E;
+    static List<int[]>[] edges;
+    static int INF = 1000000000;
+    static int[] distance;
+    static boolean[] visited;
+    public static void main(String[] args) throws Exception{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        V = Integer.parseInt(br.readLine());
+        E = Integer.parseInt(br.readLine());
+
+        distance = new int[V];
+        visited = new boolean[V];
+        edges = new ArrayList[V];
+        for (int i = 0; i < V; i++) {
+            edges[i] = new ArrayList<>();
+            distance[i] = INF;
+        }
+
+        for (int i = 0; i < E; i++) {
+            StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+            int start = Integer.parseInt(st.nextToken())-1;
+            int end = Integer.parseInt(st.nextToken())-1;
+            int cost = Integer.parseInt(st.nextToken());
+
+            edges[start].add(new int[]{end, cost});
+        }
+
+        StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+        int startNum = Integer.parseInt(st.nextToken()) - 1;
+        int endNum = Integer.parseInt(st.nextToken()) - 1;
+
+        distance[startNum] = 0;
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[1] - b[1]);
+        pq.add(new int[]{startNum, 0});
+        while (!pq.isEmpty()) {
+            int[] poll = pq.poll();
+            int current = poll[0];
+            int cost = poll[1];
+
+            if (visited[current]) continue;
+            visited[current] = true;
+
+            for (int i = 0; i < edges[current].size(); i++) {
+                int next = edges[current].get(i)[0];
+                int nextCost = edges[current].get(i)[1];
+
+                if (distance[next] > cost + nextCost) {
+                    distance[next] = cost + nextCost;
+                    pq.add(new int[]{next, distance[next]});
+                }
+            }
+        }
+
+        System.out.println(distance[endNum]);
+
+    }
 }
